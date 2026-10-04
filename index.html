@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JP Connect — JP Infra | Signature Boutique Offices & Commercial Spaces</title>
+  
+  <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Tailwind Configuration with JP Infra Navy, Crimson & Royal Gold -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            cinzel: ['"Cinzel"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            jp: {
+              navyDark: '#050c18',
+              navyDeep: '#0a192f',
+              navyCard: '#0f2444',
+              navyBorder: 'rgba(212, 175, 55, 0.28)',
+              navyLight: '#18345f',
+              crimson: '#D92534',
+              crimsonHover: '#b91c29',
+              gold: '#D4AF37',
+              goldLight: '#F3E5AB',
+              goldMuted: '#C5A059',
+              textMuted: '#9cb3d3'
+            }
+          },
+          animation: {
+            'kenburns': 'kenburns 22s ease-out infinite alternate',
+            'float-slow': 'floatSlow 7s ease-in-out infinite',
+            'pulse-glow': 'pulseGlow 3s ease-in-out infinite'
+          },
+          keyframes: {
+            kenburns: {
+              '0%': { transform: 'scale(1) translate(0, 0)' },
+              '100%': { transform: 'scale(1.08) translate(-1.5%, -1.5%)' }
+            },
+            floatSlow: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-8px)' }
+            },
+            pulseGlow: {
+              '0%, 100%': { opacity: '0.4' },
+              '50%': { opacity: '0.8' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #050c18; }
+    ::-webkit-scrollbar-thumb { background: #132a54; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+
+    /* Frosted Luxury Glassmorphism */
+    .glass-jp {
+      background: rgba(10, 25, 47, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+    }
+
+    .glass-card-option {
+      background: rgba(15, 36, 68, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .glass-card-option:hover {
+      border-color: rgba(212, 175, 55, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -8px rgba(10, 25, 47, 0.8);
+    }
+
+    .glass-card-option.active {
+      border-color: #D4AF37 !important;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.16) 0%, rgba(15, 36, 68, 0.95) 100%) !important;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.25) !important;
+    }
+
+    .active-dot {
+      background: #D4AF37;
+      box-shadow: 0 0 10px #D4AF37;
+    }
+
+    /* Ambient Poster Crossfade Container */
+    .poster-slide {
+      transition: opacity 1.2s ease-in-out, transform 1.8s ease-out;
+    }
+    .poster-slide.hidden-slide {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.96);
+    }
+    .poster-slide.visible-slide {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
+</head>
+
+<body class="bg-jp-navyDark text-slate-100 font-sans antialiased min-h-screen relative selection:bg-jp-gold selection:text-jp-navyDark overflow-x-hidden">
+
+  <!-- ========================================================================= -->
+  <!-- DYNAMIC ANIMATED POSTER BACKGROUND SHOWCASE                               -->
+  <!-- ========================================================================= -->
+  <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden select-none">
+    <!-- Ambient Radial Overlays -->
+    <div class="absolute inset-0 bg-gradient-to-t from-jp-navyDark via-jp-navyDeep/80 to-jp-navyDark/90 z-10"></div>
+    <div class="absolute inset-0 bg-radial-gradient from-transparent via-jp-navyDark/60 to-jp-navyDark z-10"></div>
+    
+    <!-- Poster Visual 1: Modern Offices at JP Connect -->
+    <div id="posterSlide1" class="poster-slide visible-slide absolute inset-0 w-full h-full flex items-center justify-center animate-kenburns opacity-35 mix-blend-screen">
+      <div class="absolute right-0 top-0 w-full md:w-3/5 h-full bg-no-repeat bg-cover bg-center"
+           style="background-image: linear-gradient(to right, rgba(5,12,24,1) 0%, rgba(10,25,47,0.7) 40%, rgba(10,25,47,0.3) 100%), url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1800&q=80');">
+      </div>
+    </div>
+
+    <!-- Poster Visual 2: Business Meets Lifestyle Mira Road -->
+    <div id="posterSlide2" class="poster-slide hidden-slide absolute inset-0 w-full h-full flex items-center justify-center animate-kenburns opacity-35 mix-blend-screen">
+      <div class="absolute right-0 top-0 w-full md:w-3/5 h-full bg-no-repeat bg-cover bg-center"
+           style="background-image: linear-gradient(to right, rgba(5,12,24,1) 0%, rgba(10,25,47,0.7) 40%, rgba(10,25,47,0.3) 100%), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=80');">
+      </div>
+    </div>
+
+    <!-- Geometric & Brand Glow Orbs -->
+    <div class="absolute top-10 left-10 w-96 h-96 bg-blue-600/10 rounded-full blur-[140px] z-10"></div>
+    <div class="absolute bottom-10 right-10 w-[500px] h-[500px] bg-jp-crimson/10 rounded-full blur-[160px] z-10"></div>
+    <div class="absolute top-1/2 left-1/3 w-80 h-80 bg-jp-gold/10 rounded-full blur-[130px] z-10"></div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- TOP NAVIGATION & BRAND IDENTITY BAR                                       -->
+  <!-- ========================================================================= -->
+  <header class="relative z-30 border-b border-white/10 backdrop-blur-md bg-jp-navyDeep/80 sticky top-0 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 sm:h-24 flex items-center justify-between">
+      
+      <!-- Authentic JP Infra Brand Recreation -->
+      <div class="flex items-center space-x-3.5 sm:space-x-5">
+        <div class="flex items-center space-x-3 bg-jp-navyDark/90 px-3.5 py-2 rounded-xl border border-white/10 shadow-lg">
+          <svg class="w-8 h-8 sm:w-10 sm:h-10 shrink-0" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M42 22C68 28 85 45 68 76C55 58 50 40 42 22Z" fill="#D92534"/>
+            <path d="M22 22C38 32 50 50 36 78C30 65 20 40 22 22Z" fill="#FFFFFF"/>
+            <path d="M20 78C35 78 52 74 65 77C45 74 30 76 20 78Z" fill="#FFFFFF"/>
+          </svg>
+          <div class="h-8 w-px bg-white/30 hidden sm:block"></div>
+          <div>
+            <div class="font-cinzel text-xl sm:text-2xl font-bold tracking-wider text-white flex items-center leading-none">
+              JP <span class="font-cinzel font-light text-jp-goldLight ml-1.5">INFRA</span>
+            </div>
+            <div class="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-jp-textMuted font-semibold mt-1">
+              Delivering Promises
+            </div>
+          </div>
+        </div>
+
+        <div class="hidden xl:block">
+          <span class="text-xs uppercase tracking-widest text-jp-gold font-bold flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-jp-gold animate-ping"></span> JP CONNECT — MIRA ROAD
+          </span>
+          <p class="text-[11px] text-slate-400">Signature Boutique Offices & Commercial Spaces</p>
+        </div>
+      </div>
+
+      <!-- Trust Badges & MahaRERA Indicator -->
+      <div class="flex items-center space-x-3 sm:space-x-5">
+        <div class="hidden md:flex flex-col items-end text-right">
+          <span class="text-[10px] text-slate-400 uppercase tracking-wider">MahaRERA Registration No.</span>
+          <span class="text-xs font-mono font-bold text-jp-goldLight tracking-wider bg-white/5 px-2.5 py-0.5 rounded border border-white/10">
+            PCT330002502082
+          </span>
+        </div>
+
+        <!-- Direct Assistance Button -->
+        <a href="tel:+919876543210" class="flex items-center space-x-2.5 px-3 sm:px-4 py-2 rounded-xl bg-jp-navyCard/90 border border-jp-navyBorder hover:border-jp-gold text-jp-goldLight hover:text-white transition-all shadow-md">
+          <i class="fa-solid fa-phone text-xs text-jp-gold"></i>
+          <span class="text-xs font-bold tracking-wide hidden sm:inline">+91 0000000000</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN INTERACTIVE SECTION                                                  -->
+  <!-- ========================================================================= -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    
+    <!-- CAMPAIGN HERO TICKER & HIGHLIGHTS BANNER -->
+    <div class="mb-10 lg:mb-12">
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl glass-jp border-jp-navyBorder shadow-2xl relative overflow-hidden">
+        
+        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-jp-crimson via-jp-gold to-blue-500"></div>
+
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-jp-navyDeep to-jp-navyLight border border-jp-navyBorder flex items-center justify-center shrink-0 text-jp-gold text-lg shadow-inner">
+            <i class="fa-solid fa-building-circle-check"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="px-2.5 py-0.5 rounded-full bg-jp-crimson text-white text-[10px] font-bold uppercase tracking-wider">
+                EOI WINDOW OPEN
+              </span>
+              <span class="text-xs sm:text-sm font-bold text-jp-goldLight">
+                Starting at ₹69L*
+              </span>
+              <span class="text-xs text-slate-400 hidden sm:inline">• Boutique Commercial Suites & Plots</span>
+            </div>
+            <h1 class="text-lg sm:text-2xl font-cinzel font-bold text-white tracking-wide mt-0.5">
+              Modern Offices at JP Connect — <span class="text-transparent bg-clip-text bg-gradient-to-r from-jp-goldLight to-jp-gold">It’s Fantastic</span>
+            </h1>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="flex items-center space-x-2 bg-jp-navyDark/80 border border-jp-gold/30 px-3.5 py-2 rounded-xl text-xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-slate-300 font-medium">Virtual Walkthrough & Plot Selection Active</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Amenity Chips Row -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-4 mt-3">
+        <div class="px-3.5 py-2 rounded-xl bg-jp-navyCard/60 border border-white/5 flex items-center space-x-2.5">
+          <i class="fa-solid fa-dumbbell text-jp-gold text-xs"></i>
+          <span class="text-xs text-slate-200 font-medium">State-of-art Gym</span>
+        </div>
+        <div class="px-3.5 py-2 rounded-xl bg-jp-navyCard/60 border border-white/5 flex items-center space-x-2.5">
+          <i class="fa-solid fa-child-reaching text-jp-gold text-xs"></i>
+          <span class="text-xs text-slate-200 font-medium">Crèche (Child Care)</span>
+        </div>
+        <div class="px-3.5 py-2 rounded-xl bg-jp-navyCard/60 border border-white/5 flex items-center space-x-2.5">
+          <i class="fa-solid fa-briefcase text-jp-gold text-xs"></i>
+          <span class="text-xs text-slate-200 font-medium">Business Center</span>
+        </div>
+        <div class="px-3.5 py-2 rounded-xl bg-jp-navyCard/60 border border-white/5 flex items-center space-x-2.5">
+          <i class="fa-solid fa-champagne-glasses text-jp-gold text-xs"></i>
+          <span class="text-xs text-slate-200 font-medium">Multipurpose Hall</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN TWO-COLUMN SPLIT: FORM (LEFT 7) + VIDEO & SUMMARY (RIGHT 5) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- ===================================================================== -->
+      <!-- FORM COLUMN (7 COLS)                                                  -->
+      <!-- ===================================================================== -->
+      <div class="lg:col-span-7 glass-jp rounded-3xl p-6 sm:p-9 shadow-2xl relative">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-white/10 gap-2">
+          <div>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-jp-crimson/20 border border-jp-crimson/40 text-rose-300 text-[11px] font-bold uppercase tracking-wider">
+              <i class="fa-solid fa-file-signature text-jp-crimson"></i> Official Expression of Interest
+            </span>
+            <h2 class="text-xl sm:text-2xl font-cinzel font-bold text-white mt-2">JP Connect — Booking & Lead Form</h2>
+            <p class="text-xs text-jp-textMuted mt-0.5">Select preferred carpet area, budget parameters, and intended use for exclusive VIP access.</p>
+          </div>
+          <div class="hidden sm:block text-right">
+            <span class="text-[10px] text-slate-400 uppercase tracking-widest block">Phase</span>
+            <span class="text-sm font-bold text-jp-gold tracking-wider font-mono">Mira Road Prime</span>
+          </div>
+        </div>
+
+        <form id="jpOfficialForm" class="space-y-7" onsubmit="event.preventDefault(); submitLeadForm();" novalidate>
+            
+            <!-- SECTION 1: PERSONAL CREDENTIALS -->
+            <div class="space-y-4">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-lg bg-jp-gold/15 text-jp-gold flex items-center justify-center text-xs font-bold">1</span>
+                <h3 class="text-sm uppercase tracking-wider font-bold text-white">Investor Contact Information</h3>
+              </div>
+
+              <!-- Full Name Input -->
+              <div class="space-y-1.5">
+                <label for="fullName" class="block text-xs font-semibold text-slate-300 tracking-wide uppercase">
+                  Full Name <span class="text-jp-crimson">*</span>
+                </label>
+                <div class="relative">
+                  <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <i class="fa-regular fa-user"></i>
+                  </div>
+                  <input 
+                    type="text" 
+                    id="fullName" 
+                    name="fullName"
+                    required
+                    placeholder="e.g. Rahul Sharma"
+                    class="w-full pl-10 pr-4 py-3 bg-jp-navyDeep/90 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-jp-gold focus:ring-1 focus:ring-jp-gold text-sm transition"
+                    oninput="handleInputChange('fullName')"
+                  >
+                </div>
+                <p id="fullNameError" class="text-jp-crimson text-xs hidden flex items-center gap-1 mt-1">
+                  <i class="fa-solid fa-circle-exclamation"></i> Please enter your valid full name.
+                </p>
+              </div>
+
+              <!-- Phone & Email 2-column Grid -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                  <label for="mobileNumber" class="block text-xs font-semibold text-slate-300 tracking-wide uppercase">
+                    Mobile Number <span class="text-jp-crimson">*</span>
+                  </label>
+                  <div class="relative flex">
+                    <span class="inline-flex items-center px-3.5 rounded-l-xl border border-r-0 border-white/10 bg-jp-navyDark text-slate-200 text-xs font-bold">
+                      🇮🇳 +91
+                    </span>
+                    <input 
+                      type="tel" 
+                      id="mobileNumber" 
+                      name="mobileNumber"
+                      required
+                      maxlength="10"
+                      placeholder="9876543210"
+                      class="w-full pl-3 pr-4 py-3 bg-jp-navyDeep/90 border border-white/10 rounded-r-xl text-white placeholder-slate-500 focus:outline-none focus:border-jp-gold focus:ring-1 focus:ring-jp-gold text-sm tracking-wide font-mono transition"
+                      oninput="handleInputChange('mobileNumber')"
+                    >
+                  </div>
+                  <p id="mobileNumberError" class="text-jp-crimson text-xs hidden flex items-center gap-1 mt-1">
+                    <i class="fa-solid fa-circle-exclamation"></i> Enter a valid 10-digit mobile number.
+                  </p>
+                </div>
+
+                <div class="space-y-1.5">
+                  <label for="emailAddress" class="block text-xs font-semibold text-slate-300 tracking-wide uppercase">
+                    Email Address <span class="text-jp-crimson">*</span>
+                  </label>
+                  <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                      <i class="fa-regular fa-envelope"></i>
+                    </div>
+                    <input 
+                      type="email" 
+                      id="emailAddress" 
+                      name="emailAddress"
+                      required
+                      placeholder="name@business.com"
+                      class="w-full pl-10 pr-4 py-3 bg-jp-navyDeep/90 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-jp-gold focus:ring-1 focus:ring-jp-gold text-sm transition"
+                      oninput="handleInputChange('emailAddress')"
+                    >
+                  </div>
+                  <p id="emailAddressError" class="text-jp-crimson text-xs hidden flex items-center gap-1 mt-1">
+                    <i class="fa-solid fa-circle-exclamation"></i> Enter a valid email address.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 2: PREFERRED CARPET AREA -->
+            <div class="space-y-3 pt-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="w-6 h-6 rounded-lg bg-jp-gold/15 text-jp-gold flex items-center justify-center text-xs font-bold">2</span>
+                  <label class="text-sm uppercase tracking-wider font-bold text-white">Preferred Carpet Area</label>
+                </div>
+                <span class="text-[11px] text-jp-gold font-medium">Boutique & Executive Layouts</span>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="areaContainer">
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex flex-col justify-between" onclick="setSelect('carpetArea', '295–350 sq. ft.', this)">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full border border-white/40 option-dot"></span>
+                    <i class="fa-solid fa-vector-square text-xs text-slate-400"></i>
+                  </div>
+                  <span class="text-sm font-bold text-white">295–350</span>
+                  <span class="text-[11px] text-jp-textMuted">sq. ft. carpet</span>
+                </button>
+
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex flex-col justify-between active" onclick="setSelect('carpetArea', '350–400 sq. ft.', this)">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full border border-white/40 option-dot active-dot"></span>
+                    <i class="fa-solid fa-fire text-xs text-jp-gold"></i>
+                  </div>
+                  <span class="text-sm font-bold text-white">350–400</span>
+                  <span class="text-[11px] text-jp-textMuted">sq. ft. (Most Preferred)</span>
+                </button>
+
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex flex-col justify-between" onclick="setSelect('carpetArea', '400–436 sq. ft.', this)">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full border border-white/40 option-dot"></span>
+                    <i class="fa-solid fa-crown text-xs text-amber-300"></i>
+                  </div>
+                  <span class="text-sm font-bold text-white">400–436</span>
+                  <span class="text-[11px] text-jp-textMuted">sq. ft. Executive</span>
+                </button>
+
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex flex-col justify-between" onclick="setSelect('carpetArea', 'Not Sure', this)">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full border border-white/40 option-dot"></span>
+                    <i class="fa-regular fa-circle-question text-xs text-slate-400"></i>
+                  </div>
+                  <span class="text-sm font-bold text-white">Not Sure</span>
+                  <span class="text-[11px] text-jp-textMuted">Consult Architect</span>
+                </button>
+              </div>
+              <input type="hidden" id="selectedCarpetArea" name="carpetArea" value="350–400 sq. ft.">
+            </div>
+
+            <!-- SECTION 3: BUDGET RANGE -->
+            <div class="space-y-3 pt-2">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <span class="w-6 h-6 rounded-lg bg-jp-gold/15 text-jp-gold flex items-center justify-center text-xs font-bold">3</span>
+                  <label class="text-sm uppercase tracking-wider font-bold text-white">Budget Range</label>
+                </div>
+                <span class="text-[11px] text-emerald-400 font-medium">EOI pricing from ₹69L*</span>
+              </div>
+
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-3" id="budgetContainer">
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex flex-col justify-between" onclick="setSelect('budget', '₹50–60 Lakh', this)">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full border border-white/40 option-dot"></span>
+                    <i class="fa-solid fa-tag text-xs text-slate-400"></i>
+                  </div>
+                  <span class="text-sm font-bold text-white">₹50–60 Lakh</span>
+                  <span class="text-[11px] text-jp-textMuted">Standard Plan</span>
+                </button>
+
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex flex-col justify-between active" onclick="setSelect('budget', '₹60–70 Lakh', this)">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full border border-white/40 option-dot active-dot"></span>
+                    <i class="fa-solid fa-star text-xs text-jp-gold"></i>
+                  </div>
+                  <span class="text-sm font-bold text-white">₹60–70 Lakh</span>
+                  <span class="text-[11px] text-jp-gold font-medium">Boutique Suites</span>
+                </button>
+
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex flex-col justify-between" onclick="setSelect('budget', '₹70 Lakh+', this)">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full border border-white/40 option-dot"></span>
+                    <i class="fa-solid fa-gem text-xs text-jp-goldLight"></i>
+                  </div>
+                  <span class="text-sm font-bold text-white">₹70 Lakh+</span>
+                  <span class="text-[11px] text-jp-textMuted">Premium Corner</span>
+                </button>
+
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex flex-col justify-between" onclick="setSelect('budget', 'Not Decided', this)">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="w-2.5 h-2.5 rounded-full border border-white/40 option-dot"></span>
+                    <i class="fa-solid fa-calculator text-xs text-slate-400"></i>
+                  </div>
+                  <span class="text-sm font-bold text-white">Not Decided</span>
+                  <span class="text-[11px] text-jp-textMuted">Custom Structuring</span>
+                </button>
+              </div>
+              <input type="hidden" id="selectedBudget" name="budget" value="₹60–70 Lakh">
+            </div>
+
+            <!-- SECTION 4: PURPOSE OF PURCHASE -->
+            <div class="space-y-3 pt-2">
+              <div class="flex items-center space-x-2">
+                <span class="w-6 h-6 rounded-lg bg-jp-gold/15 text-jp-gold flex items-center justify-center text-xs font-bold">4</span>
+                <label class="text-sm uppercase tracking-wider font-bold text-white">Purpose of Purchase</label>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" id="purposeContainer">
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex items-center space-x-3 active" onclick="setSelect('purpose', 'Investment', this)">
+                  <div class="w-9 h-9 rounded-xl bg-jp-gold/10 border border-jp-gold/20 flex items-center justify-center text-jp-gold shrink-0">
+                    <i class="fa-solid fa-arrow-trend-up"></i>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-white">Investment</div>
+                    <div class="text-[11px] text-jp-textMuted">High ROI & Rental Yield</div>
+                  </div>
+                </button>
+
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex items-center space-x-3" onclick="setSelect('purpose', 'Self Use', this)">
+                  <div class="w-9 h-9 rounded-xl bg-jp-navyLight border border-white/10 flex items-center justify-center text-slate-200 shrink-0">
+                    <i class="fa-solid fa-building-user"></i>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-white">Self Use</div>
+                    <div class="text-[11px] text-jp-textMuted">Own Corporate Office</div>
+                  </div>
+                </button>
+
+                <button type="button" class="glass-card-option p-3.5 rounded-2xl text-left flex items-center space-x-3" onclick="setSelect('purpose', 'Both', this)">
+                  <div class="w-9 h-9 rounded-xl bg-jp-navyLight border border-white/10 flex items-center justify-center text-slate-200 shrink-0">
+                    <i class="fa-solid fa-handshake"></i>
+                  </div>
+                  <div>
+                    <div class="text-sm font-bold text-white">Both</div>
+                    <div class="text-[11px] text-jp-textMuted">Hybrid Commercial Asset</div>
+                  </div>
+                </button>
+              </div>
+              <input type="hidden" id="selectedPurpose" name="purpose" value="Investment">
+            </div>
+
+            <!-- SUBMIT CALL-TO-ACTION BUTTON -->
+            <div class="pt-4 space-y-3">
+              <button 
+                type="submit" 
+                id="submitButton"
+                class="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-jp-crimson via-red-600 to-jp-crimsonHover text-white font-bold tracking-wide text-sm sm:text-base shadow-xl shadow-jp-crimson/30 hover:shadow-jp-crimson/50 hover:brightness-110 active:scale-[0.99] transition duration-200 flex items-center justify-center space-x-2.5 uppercase font-cinzel"
+              >
+                <span>Reserve Plot / Secure VIP Price Advantage</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+              </button>
+
+              <div class="flex items-center justify-center flex-wrap gap-4 text-[11px] text-slate-400 pt-1">
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-shield-halved text-jp-gold"></i> MahaRERA Verified: PCT330002502082</span>
+                <span>•</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-lock text-jp-gold"></i> SSL Encrypted</span>
+                <span>•</span>
+                <span class="flex items-center gap-1.5"><i class="fa-solid fa-certificate text-jp-gold"></i> Direct JP Infra Desk</span>
+              </div>
+            </div>
+
+        </form>
+
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- RIGHT COLUMN (5 COLS): ONLY ONE LOCAL VIDEO PLAYER                   -->
+      <!-- ===================================================================== -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- DEDICATED CLEAN LOCAL VIDEO PLAYER CONTAINER -->
+        <div class="glass-jp rounded-3xl p-5 sm:p-6 border-jp-navyBorder shadow-2xl relative overflow-hidden group">
+          
+          <!-- Video Header info -->
+          <div class="flex items-center justify-between pb-3.5 border-b border-white/10 mb-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-xl bg-jp-crimson/20 border border-jp-crimson/40 flex items-center justify-center text-rose-400 text-xs">
+                <i class="fa-solid fa-play text-sm animate-pulse"></i>
+              </div>
+              <div>
+                <span class="text-[9px] uppercase font-bold tracking-widest text-jp-gold">Official Video</span>
+                <h3 class="font-cinzel text-base font-bold text-white leading-tight">JP Connect Walkthrough</h3>
+              </div>
+            </div>
+            <span class="text-[10px] px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-slate-300 font-mono">
+              HD
+            </span>
+          </div>
+
+          <!-- 16:9 Local HTML5 Video Player -->
+          <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-black border border-white/15 shadow-2xl shadow-black/80">
+            <video 
+              id="mainLocalVideo" 
+              class="w-full h-full object-cover" 
+              controls 
+              playsinline
+              autoplay 
+              muted 
+              loop
+            >
+              <source src="jpvideo.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+        </div>
+
+        <!-- LIVE CONFIGURATION PREVIEW -->
+        <div class="glass-jp rounded-3xl p-6 border-jp-navyBorder shadow-2xl relative overflow-hidden">
+          <div class="flex items-center justify-between pb-3.5 border-b border-white/10 mb-4">
+            <div>
+              <span class="text-[10px] uppercase font-bold tracking-widest text-jp-gold">Dynamic Summary</span>
+              <h3 class="font-cinzel text-lg font-bold text-white">Your Lead Profile</h3>
+            </div>
+            <div class="w-8 h-8 rounded-full bg-jp-navyDeep border border-jp-gold/40 flex items-center justify-center text-jp-gold text-xs shadow">
+              <i class="fa-solid fa-receipt"></i>
+            </div>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="flex justify-between items-center py-1 border-b border-white/5">
+              <span class="text-slate-400">Applicant:</span>
+              <span id="previewName" class="font-bold text-white truncate max-w-[170px] text-right">Prospective Investor</span>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-white/5">
+              <span class="text-slate-400">Mobile:</span>
+              <span id="previewMobile" class="font-mono font-bold text-slate-300 text-right">+91 —</span>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-white/5">
+              <span class="text-slate-400">Carpet Area:</span>
+              <span id="previewCarpet" class="font-bold text-jp-goldLight text-right">350–400 sq. ft.</span>
+            </div>
+            <div class="flex justify-between items-center py-1 border-b border-white/5">
+              <span class="text-slate-400">Target Budget:</span>
+              <span id="previewBudget" class="font-bold text-emerald-400 text-right">₹60–70 Lakh</span>
+            </div>
+            <div class="flex justify-between items-center py-1">
+              <span class="text-slate-400">Purpose:</span>
+              <span id="previewPurpose" class="font-bold text-white text-right">Investment</span>
+            </div>
+          </div>
+
+          <div class="mt-4 p-3 bg-gradient-to-r from-jp-navyDark to-jp-navyCard rounded-xl border border-jp-gold/30 text-[11px] text-slate-300 flex items-start space-x-2">
+            <i class="fa-solid fa-sparkles text-jp-gold mt-0.5 shrink-0"></i>
+            <span>Registering today guarantees your priority invitation to the exclusive private floor plate selection.</span>
+          </div>
+        </div>
+
+        <!-- HRITHIK ROSHAN CAMPAIGN BANNER CARD -->
+        <div class="glass-jp rounded-3xl p-5 border-white/10 relative overflow-hidden group">
+          <div class="flex items-center space-x-3 mb-2">
+            <span class="px-2 py-0.5 rounded bg-jp-crimson text-white text-[9px] font-bold tracking-widest uppercase">Iconic Living</span>
+            <span class="text-xs text-jp-gold font-bold">JP Infra Brand Ambassador</span>
+          </div>
+          <p class="font-cinzel text-base font-bold text-white leading-tight">
+            "Modern Offices at JP Connect — It’s Fantastic"
+          </p>
+          <p class="text-xs text-slate-300 mt-2 leading-relaxed">
+            Signature boutique offices designed for industry leaders, entrepreneurs, and high-growth practices.
+          </p>
+        </div>
+
+        <!-- PROJECT LOCATION & CONNECTIVITY CARD -->
+        <div class="glass-jp rounded-3xl p-5 border-white/10 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="font-cinzel text-sm font-bold text-white flex items-center gap-1.5">
+              <i class="fa-solid fa-location-dot text-jp-crimson"></i> Strategic Connectivity
+            </h4>
+            <span class="text-[10px] text-jp-gold font-bold">Mira Road</span>
+          </div>
+          <ul class="text-xs text-slate-300 space-y-2">
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-train text-slate-400 text-[11px]"></i> Direct arterial Western Express Highway & Metro Link
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-building text-slate-400 text-[11px]"></i> Integrated high-rise with premium amenities
+            </li>
+            <li class="flex items-center gap-2">
+              <i class="fa-solid fa-file-contract text-slate-400 text-[11px]"></i> MahaRERA Registered: PCT330002502082
+            </li>
+          </ul>
+        </div>
+
+        <!-- WHATSAPP DIRECT CONNECT CARD -->
+        <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-950/80 to-jp-navyDeep border border-emerald-500/40 flex items-center justify-between">
+          <div>
+            <h5 class="text-xs font-bold text-white">Instant Consultation</h5>
+            <p class="text-[11px] text-emerald-300">Connect via Official WhatsApp Desk</p>
+          </div>
+          <button onclick="openDirectWhatsApp()" class="px-3 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-brand-darker font-bold text-xs flex items-center gap-1.5 transition shadow">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Connect
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- FOOTER                                                                    -->
+  <!-- ========================================================================= -->
+  <footer class="relative z-10 border-t border-white/10 mt-16 py-8 text-center text-xs text-slate-400 bg-jp-navyDark">
+    <div class="max-w-7xl mx-auto px-4 space-y-2">
+      <div class="flex items-center justify-center space-x-2">
+        <span class="font-cinzel text-sm font-bold text-white">JP INFRA</span>
+        <span>•</span>
+        <span class="text-jp-gold font-bold">JP CONNECT MIRA ROAD</span>
+      </div>
+      <p class="text-[11px] text-slate-400 max-w-3xl mx-auto leading-relaxed">
+        MahaRERA Registration No. PCT330002502082. Details available at maharera.mahaonline.gov.in. Images and specifications are artistic impressions and subject to planning approvals.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- MODAL: SUBMISSION CONFIRMATION                                            -->
+  <!-- ========================================================================= -->
+  <div id="confirmationModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+    <div class="glass-jp border border-jp-gold/60 rounded-3xl max-w-lg w-full p-6 sm:p-8 text-center shadow-2xl relative transform scale-95 transition-transform duration-300" id="confirmationBox">
+      
+      <button onclick="closeConfirmationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg w-8 h-8 rounded-full bg-white/5 flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="w-16 h-16 rounded-2xl bg-jp-gold/20 border border-jp-gold flex items-center justify-center mx-auto mb-3 text-jp-gold text-2xl shadow-lg">
+        <i class="fa-solid fa-check"></i>
+      </div>
+
+      <span class="text-[10px] font-bold tracking-widest text-jp-gold uppercase">Expression of Interest Received</span>
+      <h3 class="font-cinzel text-2xl text-white font-bold mt-1">Priority Token Reserved</h3>
+      
+      <p class="text-xs text-slate-300 mt-2">
+        Thank you, <span id="modalInvestorName" class="font-bold text-jp-goldLight">Investor</span>. Your consultation allotment has been logged.
+      </p>
+
+      <div class="my-5 p-4 rounded-xl bg-jp-navyDeep/90 border border-white/10 text-left text-xs space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Booking Reference:</span>
+          <span id="modalToken" class="font-mono font-bold text-jp-gold">JP-CON-2026</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Project:</span>
+          <span class="font-semibold text-white">JP Connect (Mira Road)</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Carpet Preference:</span>
+          <span id="modalCarpet" class="font-semibold text-white">350–400 sq. ft.</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">Target Budget:</span>
+          <span id="modalBudget" class="font-semibold text-emerald-400">₹60–70 Lakh</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-slate-400">MahaRERA:</span>
+          <span class="font-mono text-slate-300">PCT330002502082</span>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="shareWhatsAppLead()" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow">
+          <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Confirmation to Desk
+        </button>
+        <button onclick="downloadLeadReceipt()" class="w-full py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-slate-200 text-xs font-semibold flex items-center justify-center gap-2">
+          <i class="fa-solid fa-download"></i> Download EOI Token Acknowledgement (.txt)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- APPLICATION JAVASCRIPT LOGIC                                              -->
+  <!-- ========================================================================= -->
+  <script>
+    // State management
+    const appState = {
+      fullName: '',
+      mobileNumber: '',
+      emailAddress: '',
+      carpetArea: '350–400 sq. ft.',
+      budget: '₹60–70 Lakh',
+      purpose: 'Investment'
+    };
+
+    // Interactive Option Selection
+    function setSelect(field, val, element) {
+      appState[field] = val;
+
+      if (field === 'carpetArea') {
+        document.getElementById('selectedCarpetArea').value = val;
+        document.querySelectorAll('#areaContainer .glass-card-option').forEach(el => {
+          el.classList.remove('active');
+          const dot = el.querySelector('.option-dot');
+          if (dot) dot.classList.remove('active-dot');
+        });
+        element.classList.add('active');
+        const activeDot = element.querySelector('.option-dot');
+        if (activeDot) activeDot.classList.add('active-dot');
+        document.getElementById('previewCarpet').innerText = val;
+      } 
+      else if (field === 'budget') {
+        document.getElementById('selectedBudget').value = val;
+        document.querySelectorAll('#budgetContainer .glass-card-option').forEach(el => {
+          el.classList.remove('active');
+          const dot = el.querySelector('.option-dot');
+          if (dot) dot.classList.remove('active-dot');
+        });
+        element.classList.add('active');
+        const activeDot = element.querySelector('.option-dot');
+        if (activeDot) activeDot.classList.add('active-dot');
+        document.getElementById('previewBudget').innerText = val;
+      }
+      else if (field === 'purpose') {
+        document.getElementById('selectedPurpose').value = val;
+        document.querySelectorAll('#purposeContainer .glass-card-option').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+        document.getElementById('previewPurpose').innerText = val;
+      }
+    }
+
+    // Input handlers & Realtime preview
+    function handleInputChange(fieldId) {
+      const input = document.getElementById(fieldId);
+      const val = input.value.trim();
+
+      if (fieldId === 'fullName') {
+        appState.fullName = val;
+        document.getElementById('previewName').innerText = val || 'Prospective Investor';
+        validateInput(fieldId);
+      } else if (fieldId === 'mobileNumber') {
+        const clean = val.replace(/\D/g, '');
+        input.value = clean;
+        appState.mobileNumber = clean;
+        document.getElementById('previewMobile').innerText = clean ? `+91 ${clean}` : '+91 —';
+        validateInput(fieldId);
+      } else if (fieldId === 'emailAddress') {
+        appState.emailAddress = val;
+        validateInput(fieldId);
+      }
+    }
+
+    function validateInput(fieldId) {
+      const input = document.getElementById(fieldId);
+      const errorMsg = document.getElementById(fieldId + 'Error');
+      let isValid = true;
+
+      if (fieldId === 'fullName') {
+        isValid = input.value.trim().length >= 3;
+      } else if (fieldId === 'mobileNumber') {
+        isValid = /^[6-9]\d{9}$/.test(input.value.trim());
+      } else if (fieldId === 'emailAddress') {
+        isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+      }
+
+      if (isValid) {
+        errorMsg.classList.add('hidden');
+        input.classList.remove('border-jp-crimson');
+      } else {
+        errorMsg.classList.remove('hidden');
+        input.classList.add('border-jp-crimson');
+      }
+
+      return isValid;
+    }
+
+    // Submission handler
+    function submitLeadForm() {
+      const isName = validateInput('fullName');
+      const isMobile = validateInput('mobileNumber');
+      const isEmail = validateInput('emailAddress');
+
+      if (!isName || !isMobile || !isEmail) {
+        return;
+      }
+
+      const submitBtn = document.getElementById('submitButton');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Registering Priority EOI...`;
+
+      const generatedToken = 'JP-CON-' + Math.floor(10000 + Math.random() * 90000);
+
+      const leadRecord = {
+        token: generatedToken,
+        fullName: appState.fullName,
+        mobileNumber: '+91' + appState.mobileNumber,
+        email: appState.emailAddress,
+        carpetArea: appState.carpetArea,
+        budget: appState.budget,
+        purpose: appState.purpose,
+        project: 'JP Connect (Mira Road)',
+        timestamp: new Date().toISOString()
+      };
+
+      setTimeout(() => {
+        saveLead(leadRecord);
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Schedule VIP Consultation & Secure Price Advantage</span> <i class="fa-solid fa-arrow-right text-xs"></i>`;
+
+        // Confetti celebration
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 90,
+            spread: 80,
+            origin: { y: 0.6 },
+            colors: ['#D4AF37', '#D92534', '#ffffff', '#18345f']
+          });
+        }
+
+        // Display modal
+        document.getElementById('modalInvestorName').innerText = leadRecord.fullName;
+        document.getElementById('modalToken').innerText = leadRecord.token;
+        document.getElementById('modalCarpet').innerText = leadRecord.carpetArea;
+        document.getElementById('modalBudget').innerText = leadRecord.budget;
+
+        openConfirmationModal();
+      }, 600);
+    }
+
+    // Modal Helpers
+    function openConfirmationModal() {
+      const modal = document.getElementById('confirmationModal');
+      const box = document.getElementById('confirmationBox');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        box.classList.remove('scale-95');
+        box.classList.add('scale-100');
+      }, 20);
+    }
+
+    function closeConfirmationModal() {
+      const modal = document.getElementById('confirmationModal');
+      const box = document.getElementById('confirmationBox');
+      modal.classList.add('opacity-0');
+      box.classList.remove('scale-100');
+      box.classList.add('scale-95');
+      setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    // Local Storage
+    function saveLead(lead) {
+      let leads = [];
+      try {
+        const stored = localStorage.getItem('jp_connect_leads');
+        if (stored) leads = JSON.parse(stored);
+      } catch (e) {
+        leads = [];
+      }
+      leads.unshift(lead);
+      localStorage.setItem('jp_connect_leads', JSON.stringify(leads));
+    }
+
+    // Direct WhatsApp Actions
+    function openDirectWhatsApp() {
+      const text = encodeURIComponent("Hello JP Infra Team, I would like to inquire about the EOI Window for JP Connect boutique offices starting at ₹69L* at Mira Road.");
+      window.open(`https://wa.me/919876543210?text=${text}`, '_blank');
+    }
+
+    function shareWhatsAppLead() {
+      const token = document.getElementById('modalToken').innerText;
+      const text = encodeURIComponent(`Hello JP Infra, I have registered my Expression of Interest for JP Connect (Mira Road). Token: ${token}, Area: ${appState.carpetArea}, Budget: ${appState.budget}. Kindly share the detailed brochure and floor plan.`);
+      window.open(`https://wa.me/919876543210?text=${text}`, '_blank');
+    }
+
+    function downloadLeadReceipt() {
+      const token = document.getElementById('modalToken').innerText;
+      const name = document.getElementById('modalInvestorName').innerText;
+      const content = `========================================================\nJP INFRA — JP CONNECT LEAD ACKNOWLEDGEMENT\n========================================================\nMahaRERA Registration: PCT330002502082\nToken Reference: ${token}\nInvestor Name: ${name}\nContact: +91 ${appState.mobileNumber}\nCarpet Area: ${appState.carpetArea}\nBudget Range: ${appState.budget}\nPurpose: ${appState.purpose}\nStarting Price: ₹69 Lakh*\nLocation: Mira Road, Maharashtra\n========================================================`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `JP_Connect_EOI_${token}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
